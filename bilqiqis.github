@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segari - Minuman Kekinian Segar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B6B',
+                        secondary: '#4ECDC4',
+                        accent: '#FFE66D',
+                        dark: '#1A1A2E',
+                        light: '#F7F7F7'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-pattern {
+            background-color: #ff6b6b;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .cart-notification {
+            transition: all 0.3s ease;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .smooth-transition {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="font-poppins bg-gray-50">
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="#" class="text-2xl font-bold text-primary">Segari<span class="text-secondary">.</span></a>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-10">
+                <a href="#" class="text-dark hover:text-primary smooth-transition">Beranda</a>
+                <a href="#menu" class="text-dark hover:text-primary smooth-transition">Menu</a>
+                <a href="#promo" class="text-dark hover:text-primary smooth-transition">Promo</a>
+                <a href="#about" class="text-dark hover:text-primary smooth-transition">Tentang Kami</a>
+                <a href="#contact" class="text-dark hover:text-primary smooth-transition">Kontak</a>
+            </nav>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <button id="cart-button" class="text-dark hover:text-primary smooth-transition">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </button>
+                    
+                    <!-- Cart Dropdown -->
+                    <div id="cart-dropdown" class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl p-4 hidden">
+                        <h3 class="font-semibold text-lg border-b pb-2">Keranjang Belanja</h3>
+                        <div id="cart-items" class="max-h-60 overflow-y-auto py-2">
+                            <p class="text-center text-gray-500 py-4">Keranjang belanja masih kosong</p>
+                        </div>
+                        <div class="border-t pt-2">
+                            <div class="flex justify-between font-semibold mb-4">
+                                <span>Total:</span>
+                                <span id="cart-total">Rp 0</span>
+                            </div>
+                            <button class="bg-primary text-white w-full py-2 rounded-lg hover:bg-opacity-90 smooth-transition">Checkout</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 smooth-transition hidden md:block">Pesan Sekarang</button>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden text-dark">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+                <a href="#" class="py-2 text-dark hover:text-primary smooth-transition">Beranda</a>
+                <a href="#menu" class="py-2 text-dark hover:text-primary smooth-transition">Menu</a>
+                <a href="#promo" class="py-2 text-dark hover:text-primary smooth-transition">Promo</a>
+                <a href="#about" class="py-2 text-dark hover:text-primary smooth-transition">Tentang Kami</a>
+                <a href="#contact" class="py-2 text-dark hover:text-primary smooth-transition">Kontak</a>
+                <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 smooth-transition w-full mt-2">Pesan Sekarang</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-pattern text-white">
+        <div class="container mx-auto px-4 py-20 md:py-24 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Segarkan Harimu dengan Minuman Kekinian</h1>
+                <p class="text-xl mb-8">Rasa yang memanjakan lidah dan menyegarkan tubuh. Temukan minuman favoritmu di sini!</p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#menu" class="bg-white text-primary px-6 py-3 rounded-lg font-semibold text-center hover:bg-opacity-90 smooth-transition">Lihat Menu</a>
+                    <a href="#promo" class="bg-accent text-dark px-6 py-3 rounded-lg font-semibold text-center hover:bg-opacity-90 smooth-transition">Promo Spesial</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Minuman Kekinian" class="rounded-lg shadow-xl w-full max-w-md">
+                    <div class="absolute -bottom-5 -left-5 bg-white text-dark p-4 rounded-lg shadow-lg hidden md:block">
+                        <p class="font-semibold">⭐ 4.8/5 dari 1200+ ulasan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-dark mb-12">Mengapa Memilih Kami?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center p-6 rounded-lg smooth-transition hover:shadow-lg">
+                    <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-leaf text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Bahan Berkualitas</h3>
+                    <p class="text-gray-600">Menggunakan bahan-bahan segar dan alami tanpa pengawet untuk rasa terbaik.</p>
+                </div>
+                
+                <div class="text-center p-6 rounded-lg smooth-transition hover:shadow-lg">
+                    <div class="bg-secondary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-truck text-2xl text-secondary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Pengiriman Cepat</h3>
+                    <p class="text-gray-600">Pesananmu akan sampai dengan cepat dan dalam kondisi prima.</p>
+                </div>
+                
+                <div class="text-center p-6 rounded-lg smooth-transition hover:shadow-lg">
+                    <div class="bg-accent bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-medal text-2xl text-accent"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Rasa Terjamin</h3>
+                    <p class="text-gray-600">Dibuat oleh ahli mixology dengan resep yang telah teruji.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-dark mb-4">Menu Andalan Kami</h2>
+            <p class="text-center text-gray-600 mb-12">Temukan minuman favoritmu dari berbagai pilihan kategori</p>
+            
+            <!-- Category Filters -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="category-filter px-4 py-2 rounded-full bg-primary text-white" data-category="all">Semua</button>
+                <button class="category-filter px-4 py-2 rounded-full bg-white text-dark hover:bg-primary hover:text-white smooth-transition" data-category="kopi">Kopi</button>
+                <button class="category-filter px-4 py-2 rounded-full bg-white text-dark hover:bg-primary hover:text-white smooth-transition" data-category="teh">Teh</button>
+                <button class="category-filter px-4 py-2 rounded-full bg-white text-dark hover:bg-primary hover:text-white smooth-transition" data-category="jus">Jus</button>
+                <button class="category-filter px-4 py-2 rounded-full bg-white text-dark hover:bg-primary hover:text-white smooth-transition" data-category="spesial">Spesial</button>
+            </div>
+            
+            <!-- Menu Items -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Menu Item 1 -->
+                <div class="menu-card bg-white rounded-xl overflow-hidden shadow-md smooth-transition" data-category="kopi">
+                    <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80" alt="Iced Caramel Macchiato" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold">Iced Caramel Macchiato</h3>
+                            <span class="text-primary font-bold">Rp 25.000</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Perpaduan espresso, susu, dan sirup caramel dengan es.</p>
+                        <button class="add-to-cart bg-primary text-white w-full py-2 rounded-lg hover:bg-opacity-90 smooth-transition" data-name="Iced Caramel Macchiato" data-price="25000">Tambah ke Keranjang</button>
+                    </div>
+                </div>
+                
+                <!-- Menu Item 2 -->
+                <div class="menu-card bg-white rounded-xl overflow-hidden shadow-md smooth-transition" data-category="teh">
+                    <img src="https://images.unsplash.com/photo-1568649929103-28ffbadcccea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Bubble Milk Tea" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold">Bubble Milk Tea</h3>
+                            <span class="text-primary font-bold">Rp 22.000</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Teh susu manis dengan bubble yang kenyal dan lembut.</p>
+                        <button class="add-to-cart bg-primary text-white w-full py-2 rounded-lg hover:bg-opacity-90 smooth-transition" data-name="Bubble Milk Tea" data-price="22000">Tambah ke Keranjang</button>
+                    </div>
+                </div>
+                
+                <!-- Menu Item 3 -->
+                <div class="menu-card bg-white rounded-xl overflow-hidden shadow-md smooth-transition" data-category="jus">
+                    <img src="https://images.unsplash.com/photo-1613478223719-2ab802602423?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Tropical Smoothie" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold">Tropical Smoothie</h3>
+                            <span class="text-primary font-bold">Rp 28.000</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Blended buah tropis segar dengan yogurt dan madu.</p>
+                        <button class="add-to-cart bg-primary text-white w-full py-2 rounded-lg hover:bg-opacity-90 smooth-transition" data-name="Tropical Smoothie" data-price="28000">Tambah ke Keranjang</button>
+                    </div>
+                </div>
+                
+                <!-- Menu Item 4 -->
+                <div class="menu-card bg-white rounded-xl overflow-hidden shadow-md smooth-transition" data-category="spesial">
+                    <img src="https://images.unsplash.com/photo-1550617931-e17a7b70dce2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Matcha Latte" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold">Matcha Latte</h3>
+                            <span class="text-primary font-bold">Rp 30.000</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Matcha premium asal Jepang dicampur dengan susu steamed.</p>
+                        <button class="add-to-cart bg-primary text-white w-full py-2 rounded-lg hover:bg-opacity-90 smooth-transition" data-name="Matcha Latte" data-price="30000">Tambah ke Keranjang</button>
+                    </div>
+                </div>
+                
+                <!-- Menu Item 5 -->
+                <div class="menu-card bg-white rounded-xl overflow-hidden shadow-md smooth-transition" data-category="kopi">
+                    <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="Vietnamese Coffee" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold">Vietnamese Coffee</h3>
+                            <span class="text-primary font-bold">Rp 27.000</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Kopi Vietnam khas dengan rasa kuat dan manis dari condensed milk.</p>
+                        <button class="add-to-cart bg-primary text-white w-full py-2 rounded-lg hover:bg-opacity-90 smooth-transition" data-name="Vietnamese Coffee" data-price="27000">Tambah ke Keranjang</button>
+                    </div>
+                </div>
+                
+                <!-- Menu Item 6 -->
+                <div class="menu-card bg-white rounded-xl overflow-hidden shadow-md smooth-transition" data-category="jus">
+                    <img src="https://images.unsplash.com/photo-1610969253953-6bc7ad2c43f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1176&q=80" alt="Strawberry Blast" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold">Strawberry Blast</h3>
+                            <span class="text-primary font-bold">Rp 26.000</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Blended strawberry segar dengan yogurt dan sedikit mint.</p>
+                        <button class="add-to-cart bg-primary text-white w-full py-2 rounded-lg hover:bg-opacity-90 smooth-transition" data-name="Strawberry Blast" data-price="26000">Tambah ke Keranjang</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promo Section -->
+    <section id="promo" class="py-16 bg-primary text-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4">Promo Spesial</h2>
+            <p class="text-center mb-12">Jangan lewatkan penawaran menarik dari kami</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white text-dark p-8 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-accent text-dark font-bold text-xl px-4 py-2 rounded-lg">PROMO 1</div>
+                        <span class="ml-4 text-lg font-semibold">Buy 1 Get 1</span>
+                    </div>
+                    <p class="mb-4">Setiap pembelian minuman kategori spesial mendapatkan satu minuman gratis dengan pilihan yang sama.</p>
+                    <p class="text-sm text-gray-600">Berlaku hingga 30 Juni 2023</p>
+                </div>
+                
+                <div class="bg-white text-dark p-8 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-accent text-dark font-bold text-xl px-4 py-2 rounded-lg">PROMO 2</div>
+                        <span class="ml-4 text-lg font-semibold">Diskon 20%</span>
+                    </div>
+                    <p class="mb-4">Dapatkan diskon 20% untuk semua pembelian setiap hari Senin dengan minimum pembelian Rp 50.000.</p>
+                    <p class="text-sm text-gray-600">Berlaku setiap hari Senin</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-dark mb-12">Apa Kata Pelanggan Kami?</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">"Minuman di Segari selalu segar dan rasanya konsisten. Favorite saya adalah Matcha Latte mereka!"</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gray-300 rounded-full overflow-hidden mr-3">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=464&q=80" alt="Customer" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Diana Putri</h4>
+                            <p class="text-sm text-gray-500">Pelanggan Setia</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">"Pelayanan cepat dan ramah. Minumannya selalu sampai dalam kondisi perfect!"</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gray-300 rounded-full overflow-hidden mr-3">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80" alt="Customer" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Rizky Pratama</h4>
+                            <p class="text-sm text-gray-500">Pelanggan Setia</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">"Tempat favorit buat nongkrong dan meeting. Wi-Fi-nya kencang dan suasana nyaman."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gray-300 rounded-full overflow-hidden mr-3">
+                            <img src="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80" alt="Customer" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Sari Dewi</h4>
+                            <p class="text-sm text-gray-500">Pelanggan Setia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1147&q=80" alt="Kedai Segari" class="rounded-lg shadow-xl w-full">
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                    <h2 class="text-3xl font-bold text-dark mb-6">Tentang Segari</h2>
+                    <p class="text-gray-600 mb-4">Segari hadir sejak tahun 2020 dengan misi menyajikan minuman kekinian berkualitas tinggi dengan bahan-bahan premium.</p>
+                    <p class="text-gray-600 mb-4">Kami percaya bahwa minuman yang baik tidak hanya menyegarkan tapi juga dapat membangkitkan semangat dan menciptakan momen bahagia.</p>
+                    <p class="text-gray-600 mb-6">Setiap resep dikembangkan dengan teliti oleh tim ahli kami untuk memastikan cita rasa yang konsisten dan memuaskan.</p>
+                    <div class="flex items-center">
+                        <div class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 smooth-transition cursor-pointer">Hubungi Kami</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-dark mb-4">Hubungi Kami</h2>
+            <p class="text-center text-gray-600 mb-12">Kami siap melayani kebutuhan minuman kekinian Anda</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-xl font-semibold mb-6">Informasi Kontak</h3>
+                    
+                    <div class="flex items-start mb-6">
+                        <div class="bg-primary bg-opacity-10 w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-map-marker-alt text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Alamat</h4>
+                            <p class="text-gray-600">Jl. Minuman Segar No. 123, Jakarta Selatan</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start mb-6">
+                        <div class="bg-primary bg-opacity-10 w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-phone text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Telepon</h4>
+                            <p class="text-gray-600">+62 21 765 4321</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start mb-6">
+                        <div class="bg-primary bg-opacity-10 w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-envelope text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Email</h4>
+                            <p class="text-gray-600">hello@segari.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="bg-primary bg-opacity-10 w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-clock text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Jam Operasional</h4>
+                            <p class="text-gray-600">Setiap hari 09.00 - 22.00 WIB</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold mb-6">Kirim Pesan</h3>
+                    <form id="contact-form">
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 mb-2">Nama Lengkap</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 mb-2">Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="message" class="block text-gray-700 mb-2">Pesan</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 smooth-transition">Kirim Pesan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">Segari<span class="text-secondary">.</span></h3>
+                    <p class="text-gray-400">Menyajikan minuman kekinian terbaik dengan bahan-bahan premium dan rasa yang memukau.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Tautan Cepat</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white smooth-transition">Beranda</a></li>
+                        <li><a href="#menu" class="text-gray-400 hover:text-white smooth-transition">Menu</a></li>
+                        <li><a href="#promo" class="text-gray-400 hover:text-white smooth-transition">Promo</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white smooth-transition">Tentang Kami</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white smooth-transition">Kontak</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Kategori Menu</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white smooth-transition">Kopi</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white smooth-transition">Teh</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white smooth-transition">Jus</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white smooth-transition">Minuman Spesial</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white smooth-transition">Snack</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Ikuti Kami</h4>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center hover:bg-primary smooth-transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center hover:bg-primary smooth-transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center hover:bg-primary smooth-transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center hover:bg-primary smooth-transition">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400">Dapatkan update promo dan menu terbaru dengan berlangganan newsletter kami.</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 Segari. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Notification -->
+    <div id="cart-notification" class="cart-notification fixed top-4 right-4 bg-primary text-white px-6 py-3 rounded-lg shadow-lg hidden">
+        <span class="mr-2"><i class="fas fa-check-circle"></i></span>
+        <span>Item ditambahkan ke keranjang!</span>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Cart Toggle
+        document.getElementById('cart-button').addEventListener('click', function() {
+            const cartDropdown = document.getElementById('cart-dropdown');
+            cartDropdown.classList.toggle('hidden');
+        });
+
+        // Category Filter
+        const categoryFilters = document.querySelectorAll('.category-filter');
+        const menuCards = document.querySelectorAll('.menu-card');
+        
+        categoryFilters.forEach(filter => {
+            filter.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                
+                // Update active button
+                categoryFilters.forEach(btn => {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('bg-white', 'text-dark', 'hover:bg-primary', 'hover:text-white');
+                });
+                
+                this.classList.remove('bg-white', 'text-dark', 'hover:bg-primary', 'hover:text-white');
+                this.classList.add('bg-primary', 'text-white');
+                
+                // Filter menu items
+                menuCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // Cart Functionality
+        let cartItems = [];
+        let cartTotal = 0;
+        
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const name = this.getAttribute('data-name');
+                const price = parseInt(this.getAttribute('data-price'));
+                
+                // Add to cart
+                cartItems.push({ name, price });
+                cartTotal += price;
+                
+                // Update cart UI
+                updateCartUI();
+                
+                // Show notification
+                const notification = document.getElementById('cart-notification');
+                notification.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    notification.classList.add('hidden');
+                }, 3000);
+            });
+        });
+        
+        function updateCartUI() {
+            const cartCount = document.getElementById('cart-count');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalElement = document.getElementById('cart-total');
+            
+            // Update count
+            cartCount.textContent = cartItems.length;
+            
+            // Update items list
+            if (cartItems.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-center text-gray-500 py-4">Keranjang belanja masih kosong</p>';
+            } else {
+                cartItemsContainer.innerHTML = '';
+                cartItems.forEach((item, index) => {
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('flex', 'justify-between', 'items-center', 'py-2', 'border-b');
+                    itemElement.innerHTML = `
+                        <div>
+                            <p class="font-medium">${item.name}</p>
+                            <p class="text-sm text-gray-600">Rp ${item.price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <button class="remove-from-cart text-red-500 hover:text-red-700" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                    cartItemsContainer.appendChild(itemElement);
+                });
+                
+                // Add event listeners to remove buttons
+                const removeButtons = document.querySelectorAll('.remove-from-cart');
+                removeButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        removeFromCart(index);
+                    });
+                });
+            }
+            
+            // Update total
+            cartTotalElement.textContent = `Rp ${cartTotal.toLocaleString('id-ID')}`;
+        }
+        
+        function removeFromCart(index) {
+            // Remove item from cart
+            cartTotal -= cartItems[index].price;
+            cartItems.splice(index, 1);
+            
+            // Update UI
+            updateCartUI();
+        }
+        
+        // Contact Form Submission
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Terima kasih! Pesan Anda telah berhasil dikirim.');
+            this.reset();
+        });
+
+        // Close cart when clicking outside
+        document.addEventListener('click', function(e) {
+            const cartButton = document.getElementById('cart-button');
+            const cartDropdown = document.getElementById('cart-dropdown');
+            
+            if (!cartButton.contains(e.target) && !cartDropdown.contains(e.target)) {
+                cartDropdown.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
